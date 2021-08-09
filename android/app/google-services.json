@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "159862829927",
+    "project_id": "my-restaurant-9e53d",
+    "storage_bucket": "my-restaurant-9e53d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159862829927:android:51403eea7695049bfff5c2",
+        "android_client_info": {
+          "package_name": "adzumrjada.my_restaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159862829927-2l0pqavbifav0c4arabj3e5p3jf3p243.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD60mCfRsAk28oUgDsCVEanWw3WnI40dI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159862829927-2l0pqavbifav0c4arabj3e5p3jf3p243.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
