@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_restaurant/components/colors.dart';
 import 'package:my_restaurant/components/common.dart';
+import 'package:my_restaurant/modelAndServices/cartProvider.dart';
 import 'package:my_restaurant/onBoardingPages/signIn.dart';
+import 'package:provider/provider.dart';
 
 import 'homeScreen.dart';
 
@@ -22,6 +24,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<CartProvider>(context);
     return Scaffold(
       drawer: NavigationDrawer(),
       key: scaffoldKey,

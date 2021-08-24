@@ -21,6 +21,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: any
   provider: any
+  firebase_database: any
+  flutter_cart: any
   firebase_auth: any
   cloud_firestore: any
   font_awesome_flutter: any

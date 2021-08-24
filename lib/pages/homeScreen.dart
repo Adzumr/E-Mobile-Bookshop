@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_alt/modal_progress_hud_alt.dart';
 import 'package:my_restaurant/components/colors.dart';
 import 'package:my_restaurant/components/common.dart';
-import 'package:my_restaurant/modelAndServices/assistantModel.dart';
+import 'package:my_restaurant/modelAndServices/cartProvider.dart';
+import 'package:my_restaurant/modelAndServices/dishItem.dart';
 import 'package:my_restaurant/pages/about.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const idScreen = "homeScreen";
@@ -18,9 +18,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  AssistantModel assistantModel = AssistantModel();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   bool showSpinner = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,221 +75,47 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                       children: [
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "Akara");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: akaraImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "Akara",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        DishCard(
+                          image: akaraImage,
+                          dishName: "Akara",
+                          price: 350,
                         ),
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "Fried Rice");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: friedRiceImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "Fried Rice",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        DishCard(
+                          image: friedRiceImage,
+                          dishName: "Fried Rice",
+                          price: 500,
                         ),
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "Jollof Rice");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: jollofRiceImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "Jollof Rice",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+
+                        DishCard(
+                          price: 500,
+                          dishName: "Jollof Rice",
+                          image: jollofRiceImage,
                         ),
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "Moi Moi");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: moiMoiImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "Moi Moi",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        DishCard(
+                          price: 300,
+                          dishName: "Moi Moi",
+                          image: moiMoiImage,
                         ),
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "Porridge Yam");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: poridgeYamImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "Porridge Yam",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        // Porridge Yam
+                        DishCard(
+                          price: 500,
+                          dishName: "Yam Porridge",
+                          image: poridgeYamImage,
                         ),
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "Pounded Yam");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: poundedYamImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "Pounded Yam",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        DishCard(
+                          price: 500,
+                          dishName: "Pounded Yam",
+                          image: poundedYamImage,
                         ),
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "Rice and Beans");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: riceBeansImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "Rice Beans",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        DishCard(
+                          price: 500,
+                          dishName: "Rice & Beans",
+                          image: riceBeansImage,
                         ),
-                        Card(
-                          elevation: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              _placeOrder(dishName: "White Rice");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: whiteRiceImage,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Text(
-                                "White Rice",
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        DishCard(
+                          price: 400,
+                          dishName: "White Rice",
+                          image: whiteRiceImage,
                         ),
                       ],
                     ),
@@ -302,42 +128,88 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
 
-  _placeOrder({required String dishName}) async {
-    try {
-      setState(() {
-        showSpinner = true;
-      });
-      final firebaseUser = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance.collection("Orders").add({
-        'Name': FirebaseAuth.instance.currentUser!.displayName,
-        'dish': dishName,
-        'price': "500",
-        'Phone Number': await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(firebaseUser!.uid)
-            .get()
-            .then((value) {
-          return value.get("phoneNumber");
-        }),
-        'Delivery Address': await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(firebaseUser.uid)
-            .get()
-            .then((value) {
-          return value.get("deliveryAddress");
-        }),
-      });
-      Fluttertoast.showToast(msg: "Order placed ");
-      setState(() {
-        showSpinner = false;
-      });
-    } catch (error) {
-      setState(() {
-        showSpinner = false;
-      });
-      FirebaseAuth.instance.signOut();
-      Fluttertoast.showToast(msg: error.toString());
-    }
+class DishCard extends StatelessWidget {
+  DishCard({
+    required this.price,
+    required this.dishName,
+    required this.image,
+  });
+  final String dishName;
+  final double price;
+  final AssetImage image;
+
+  @override
+  Widget build(BuildContext context) {
+    var cart = Provider.of<CartProvider>(context);
+    return Card(
+      elevation: 4,
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Add to Cart"),
+                      CloseButton(),
+                    ],
+                  ),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text(
+                          "Dish: " + dishName,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          "Price: " + price.toString(),
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        trailing: Image(image: akaraImage),
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          cart.addDish(
+                            dishItem:
+                                DishItem(dishName: dishName, dishPrice: price),
+                          );
+                          Fluttertoast.showToast(
+                              msg: "Added to cart successfully");
+                          Navigator.pop(context);
+                        },
+                        child: Text("Add"),
+                      )
+                    ],
+                  ),
+                );
+              });
+        },
+        child: Container(
+          padding: EdgeInsets.all(5),
+          alignment: Alignment.bottomCenter,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image: DecorationImage(
+              image: image,
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

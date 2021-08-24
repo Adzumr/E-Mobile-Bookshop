@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_restaurant/onBoardingPages/signIn.dart';
 import 'package:my_restaurant/pages/homeScreen.dart';
 import 'package:my_restaurant/pages/profileScreen.dart';
+import 'package:my_restaurant/pages/shoppingCart.dart';
 
 import 'colors.dart';
 
@@ -68,6 +69,21 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               ),
               title: Text(
                 "Home",
+                style: TextStyle(color: whiteColor),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, ShoppingCart.idScreen, (route) => false);
+              },
+              leading: Icon(
+                (Icons.shopping_cart_outlined),
+                color: whiteColor,
+                size: 30,
+              ),
+              title: Text(
+                "Cart",
                 style: TextStyle(color: whiteColor),
               ),
             ),
