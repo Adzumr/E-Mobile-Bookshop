@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_restaurant/components/colors.dart';
+import 'package:my_restaurant/components/common.dart';
 import 'package:my_restaurant/onBoardingPages/adminSigning.dart';
 
 class PreviousOrders extends StatefulWidget {
@@ -61,6 +62,18 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                   return ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
+                        Map<String, dynamic> userDetails =
+                            snapshot.data!.docs[index]["User Detail"];
+
+                        Map<String, dynamic> dishDetail =
+                            snapshot.data!.docs[index]["Dishes"];
+                        var dishNamelist = [];
+                        var userInfo = [];
+                        dishDetail
+                            .forEach((key, value) => dishNamelist.add(key));
+                        userDetails
+                            .forEach((key, value) => userInfo.add(value));
+
                         return Card(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           elevation: 2,
@@ -68,38 +81,52 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                for (var user in userInfo)
+                                  Text(
+                                    user,
+                                    style: orderHistoryStyle,
+                                  ),
+                                for (var item in dishNamelist)
+                                  Text(
+                                    item,
+                                    style: orderHistoryStyle,
+                                  ),
                                 Text(
-                                  snapshot.data!.docs[index]["Name"].toString(),
-                                  style: TextStyle(
-                                      color: secondaryColor, fontSize: 18),
-                                ),
-                                Text(
-                                  snapshot.data!.docs[index]["dish"].toString(),
-                                  style: TextStyle(
-                                      color: secondaryColor, fontSize: 18),
-                                ),
-                                Text(
-                                  snapshot.data!.docs[index]["price"]
+                                  snapshot.data!.docs[index]["Total Amount"]
                                       .toString(),
                                   style: TextStyle(
-                                      color: secondaryColor, fontSize: 18),
-                                ),
-                                Text(
-                                  snapshot.data!.docs[index]["Phone Number"]
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: secondaryColor, fontSize: 18),
-                                ),
-                                Text(
-                                  snapshot.data!.docs[index]["Delivery Address"]
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: secondaryColor, fontSize: 18),
-                                ),
+                                    fontSize: 25,
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
                               ],
                             ),
+                            // Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     ListTile(
+                            //       title: Text(
+                            //         "Dishes: "
+                            //         "${dishDetail.keys}",
+                            //         style: TextStyle(
+                            //             color: secondaryColor, fontSize: 18),
+                            //       ),
+                            //       subtitle: Text(
+                            //         "Dishes: "
+                            //         "${userDetails.values}",
+                            //         style: TextStyle(
+                            //             color: secondaryColor, fontSize: 18),
+                            //       ),
+                            //       trailing: Text(
+                            //         snapshot.data!.docs[index]["Total Amount"]
+                            //             .toString(),
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
                           ),
                         );
                       });

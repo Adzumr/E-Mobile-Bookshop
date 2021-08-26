@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,15 +8,14 @@ import 'dishItem.dart';
 
 class CartProvider with ChangeNotifier {
   List<DishItem> dishList = [];
-  List<String> dishesName = [];
   double price = 0.0;
   void addDish({required DishItem dishItem}) {
-    dishesName.add(dishItem.dishName);
     dishList.add(dishItem);
     price = price + dishItem.dishPrice;
     notifyListeners();
   }
 
+  static void retrieveOrders() {}
   void removeDish({
     required int index,
     required double dishPrice,
@@ -34,13 +34,28 @@ class CartProvider with ChangeNotifier {
   }
 
   void placeOrder() async {
+    var dishMap = {};
+    var userInfo = {
+      "Name": FirebaseAuth.instance.currentUser!.displayName,
+      "Email Adrdess": FirebaseAuth.instance.currentUser!.email,
+      // "Delivery Address": deliveryAddress,
+    };
+    dishList.forEach((dish) => dishMap[dish.dishName] = dish.dishPrice);
+    Map orderDetail = {
+      "Total Amount": price,
+      "Dishes": dishMap,
+      "User Detail": userInfo,
+    };
     try {
-      await ordersReference.push().set({
-        "Dishes": dishList.whereType<String>(),
-        "Amount": totalPrice,
-        "Name": FirebaseAuth.instance.currentUser!.displayName,
-        "Email": FirebaseAuth.instance.currentUser!.email,
-      }).then((value) {
+      await FirebaseFirestore.instance
+          .collection("Orders")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set({
+        "Total Amount": price,
+        "Dishes": dishMap,
+        "User Detail": userInfo,
+      });
+      await ordersReference.push().set(orderDetail).then((value) {
         Fluttertoast.showToast(msg: "Order Placed!!!");
         dishList.clear();
         price = 0.0;

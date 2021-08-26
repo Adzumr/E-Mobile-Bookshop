@@ -17,7 +17,11 @@ AssetImage riceBeansImage = AssetImage("assets/rice_beans.webp");
 AssetImage whiteRiceImage = AssetImage("assets/white_rice.webp");
 AssetImage dishImage = AssetImage("assets/dish.webp");
 AssetImage myPic = AssetImage("assets/sule.webp");
-
+TextStyle orderHistoryStyle = TextStyle(
+  fontSize: 20,
+  color: secondaryColor,
+  fontWeight: FontWeight.bold,
+);
 InputDecoration textFieldDecoration = InputDecoration(
   filled: true,
   fillColor: primaryColor,
