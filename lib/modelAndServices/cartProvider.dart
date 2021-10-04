@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -41,21 +40,19 @@ class CartProvider with ChangeNotifier {
       // "Delivery Address": deliveryAddress,
     };
     dishList.forEach((dish) => dishMap[dish.dishName] = dish.dishPrice);
-    Map orderDetail = {
-      "Total Amount": price,
+    Map orderPlaced = {
       "Dishes": dishMap,
-      "User Detail": userInfo,
+      "Amount": price,
+      "User": userInfo,
     };
+    Map nodMCU = {
+      "Dishes": dishMap,
+      "Amount": price,
+    };
+
     try {
-      await FirebaseFirestore.instance
-          .collection("Orders")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .set({
-        "Total Amount": price,
-        "Dishes": dishMap,
-        "User Detail": userInfo,
-      });
-      await ordersReference.push().set(orderDetail).then((value) {
+      await nodMCUReference.set(nodMCU);
+      await ordersReference.push().set(orderPlaced).then((value) {
         Fluttertoast.showToast(msg: "Order Placed!!!");
         dishList.clear();
         price = 0.0;

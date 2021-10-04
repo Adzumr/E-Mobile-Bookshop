@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_restaurant/onBoardingPages/signIn.dart';
 import 'package:my_restaurant/pages/homeScreen.dart';
 import 'package:my_restaurant/pages/profileScreen.dart';
@@ -115,10 +116,16 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   onPrimary: secondaryColor,
                 ),
                 child: Text("Logout"),
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, SignIn.idScreen, (route) => false);
+                onPressed: () async {
+                  try {
+                    await FirebaseAuth.instance.signOut();
+                    await Fluttertoast.showToast(
+                        msg: "Sign out successfully !!!");
+                    await Navigator.pushNamedAndRemoveUntil(
+                        context, SignIn.idScreen, (route) => false);
+                  } catch (error) {
+                    Fluttertoast.showToast(msg: error.toString());
+                  }
                 },
               ),
             ),

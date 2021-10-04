@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:my_restaurant/components/colors.dart';
+import 'package:my_restaurant/modelAndServices/cartProvider.dart';
+import 'package:my_restaurant/modelAndServices/userProvider.dart';
 import 'package:my_restaurant/onBoardingPages/adminSigning.dart';
 import 'package:my_restaurant/onBoardingPages/signIn.dart';
 import 'package:my_restaurant/onBoardingPages/signUp.dart';
@@ -12,8 +14,6 @@ import 'package:my_restaurant/pages/previousOrders.dart';
 import 'package:my_restaurant/pages/profileScreen.dart';
 import 'package:my_restaurant/pages/shoppingCart.dart';
 import 'package:provider/provider.dart';
-
-import 'modelAndServices/cartProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,14 +25,23 @@ void main() async {
 
 DatabaseReference userReference =
     FirebaseDatabase.instance.reference().child("Users");
+DatabaseReference nodMCUReference =
+    FirebaseDatabase.instance.reference().child("Nod MCU Orders");
 DatabaseReference ordersReference =
     FirebaseDatabase.instance.reference().child("Orders");
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CartProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

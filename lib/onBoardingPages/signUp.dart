@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -6,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_alt/modal_progress_hud_alt.dart';
 import 'package:my_restaurant/components/colors.dart';
 import 'package:my_restaurant/components/common.dart';
-import 'package:my_restaurant/main.dart';
 import 'package:my_restaurant/onBoardingPages/signIn.dart';
 import 'package:my_restaurant/pages/homeScreen.dart';
 
@@ -193,10 +193,9 @@ class _SignUpState extends State<SignUp> {
       _firebaseAuth.currentUser!.updateDisplayName(name);
       _firebaseAuth.currentUser!.updateEmail(emailAddress);
 
-      Fluttertoast.showToast(msg: "Register Sucessfully");
+      Fluttertoast.showToast(msg: "Register Successfully");
       var userID = _firebaseAuth.currentUser!.uid;
-      await userReference.child(userID).set({
-        "userID": userID,
+      await FirebaseFirestore.instance.collection("Users").doc(userID).set({
         "Name": name.trim(),
         "Delivery Address": deliveryAddress.trim(),
         "Email Address": emailAddress.trim(),

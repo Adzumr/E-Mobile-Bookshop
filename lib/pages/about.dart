@@ -46,7 +46,7 @@ class AboutMe extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Image.asset(
-                  "assets/sule.jpg",
+                  "assets/adzumr.jpg",
                   height: 200,
                 ),
                 SizedBox(height: 20),
@@ -79,7 +79,7 @@ class AboutMe extends StatelessWidget {
                         ),
                         SizedBox(width: 10),
                         SelectableText(
-                          "+2347032057644",
+                          "+2348130762880",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
