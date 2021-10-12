@@ -51,8 +51,8 @@ class AboutMe extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "I am  Abubakar Sulaiman Salihu HND 2 in department of Computer Science"
-                  " Federal Polytechnic Bauchi."
+                  "I am  Umar Abdulaziz Jada with Registration Number 15/38979U/2,"
+                  " department of Computer and Communications Engineering, ATBU Bauchi."
                   " I'm passionate about inspiring people to "
                   "drive social impact so that together "
                   "we can make the world a better place."

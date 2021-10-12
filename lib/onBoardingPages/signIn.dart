@@ -7,8 +7,6 @@ import 'package:my_restaurant/components/common.dart';
 import 'package:my_restaurant/onBoardingPages/signUp.dart';
 import 'package:my_restaurant/pages/homeScreen.dart';
 
-import 'adminSigning.dart';
-
 class SignIn extends StatefulWidget {
   static const idScreen = "signInScreen";
   const SignIn({Key? key}) : super(key: key);
@@ -28,26 +26,26 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: whiteColor,
-        actions: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, AdminSignIn.idScreen, (route) => false);
-            },
-            icon: Icon(
-              Icons.person,
-              color: secondaryColor,
-            ),
-            label: Text(
-              "Admin Access",
-              style: TextStyle(color: secondaryColor, fontSize: 18),
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: whiteColor,
+      //   actions: [
+      //     TextButton.icon(
+      //       onPressed: () {
+      //         Navigator.pushNamedAndRemoveUntil(
+      //             context, AdminSignIn.idScreen, (route) => false);
+      //       },
+      //       icon: Icon(
+      //         Icons.person,
+      //         color: secondaryColor,
+      //       ),
+      //       label: Text(
+      //         "Admin Access",
+      //         style: TextStyle(color: secondaryColor, fontSize: 18),
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(

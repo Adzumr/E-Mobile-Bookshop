@@ -8,14 +8,6 @@ import 'package:my_restaurant/pages/shoppingCart.dart';
 
 import 'colors.dart';
 
-AssetImage akaraImage = AssetImage("assets/akara.webp");
-AssetImage friedRiceImage = AssetImage("assets/fried_rice.webp");
-AssetImage jollofRiceImage = AssetImage("assets/jollof_rice.webp");
-AssetImage moiMoiImage = AssetImage("assets/moi_moi.webp");
-AssetImage poridgeYamImage = AssetImage("assets/poridge_yam.jpg");
-AssetImage poundedYamImage = AssetImage("assets/pounded_yam.jpg");
-AssetImage riceBeansImage = AssetImage("assets/rice_beans.webp");
-AssetImage whiteRiceImage = AssetImage("assets/white_rice.webp");
 AssetImage dishImage = AssetImage("assets/dish.webp");
 AssetImage myPic = AssetImage("assets/sule.webp");
 TextStyle orderHistoryStyle = TextStyle(

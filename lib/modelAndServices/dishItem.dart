@@ -1,5 +1,5 @@
 class DishItem {
   String dishName;
-  double dishPrice;
+  var dishPrice;
   DishItem({required this.dishName, required this.dishPrice});
 }

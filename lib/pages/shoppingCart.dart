@@ -109,22 +109,60 @@ class _ShoppingCartState extends State<ShoppingCart> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    try {
-                      setState(() {
-                        showSpinner = true;
-                      });
-                      cart.placeOrder();
-                      await Navigator.pushNamedAndRemoveUntil(
-                          context, HomeScreen.idScreen, (route) => false);
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (error) {
-                      setState(() {
-                        showSpinner = false;
-                      });
-                      Fluttertoast.showToast(msg: error.toString());
-                    }
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Checkout ?"),
+                                CloseButton(),
+                              ],
+                            ),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    if (cart.dishList.length != 0) {
+                                      try {
+                                        cart.placeOrder();
+                                        Fluttertoast.showToast(
+                                          msg: "Order Placed Successfully!!!",
+                                          toastLength: Toast.LENGTH_LONG,
+                                        );
+
+                                        await Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            HomeScreen.idScreen,
+                                            (route) => false);
+                                      } catch (error) {
+                                        await Fluttertoast.showToast(
+                                          msg: error.toString(),
+                                        );
+                                      }
+                                    } else {
+                                      Fluttertoast.showToast(
+                                              msg: "Cart is Empty")
+                                          .then((value) =>
+                                              Navigator.pop(context));
+                                    }
+                                  },
+                                  child: Text("Yes"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("No"),
+                                  style: ElevatedButton.styleFrom(
+                                      primary: primaryColor),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

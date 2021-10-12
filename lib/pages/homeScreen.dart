@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,7 +7,6 @@ import 'package:my_restaurant/components/colors.dart';
 import 'package:my_restaurant/components/common.dart';
 import 'package:my_restaurant/modelAndServices/cartProvider.dart';
 import 'package:my_restaurant/modelAndServices/dishItem.dart';
-import 'package:my_restaurant/pages/about.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Container(
             padding: EdgeInsets.all(20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Text(
-                      "My Restaurant",
+                      "Food Menu",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
@@ -56,10 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, AboutMe.idScreen, (route) => false);
-                      },
+                      onPressed: () {},
                       icon: Icon(
                         Icons.info,
                         color: secondaryColor,
@@ -67,145 +63,147 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 15),
                 Expanded(
-                  child: Container(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      children: [
-                        DishCard(
-                          image: akaraImage,
-                          dishName: "Akara",
-                          price: 350,
-                        ),
-                        DishCard(
-                          image: friedRiceImage,
-                          dishName: "Fried Rice",
-                          price: 500,
-                        ),
-
-                        DishCard(
-                          price: 500,
-                          dishName: "Jollof Rice",
-                          image: jollofRiceImage,
-                        ),
-                        DishCard(
-                          price: 300,
-                          dishName: "Moi Moi",
-                          image: moiMoiImage,
-                        ),
-                        // Porridge Yam
-                        DishCard(
-                          price: 500,
-                          dishName: "Yam Porridge",
-                          image: poridgeYamImage,
-                        ),
-                        DishCard(
-                          price: 500,
-                          dishName: "Pounded Yam",
-                          image: poundedYamImage,
-                        ),
-                        DishCard(
-                          price: 500,
-                          dishName: "Rice & Beans",
-                          image: riceBeansImage,
-                        ),
-                        DishCard(
-                          price: 400,
-                          dishName: "White Rice",
-                          image: whiteRiceImage,
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection("Available Dishes")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        List<String> dishImages = [
+                          "assets/moi_moi.webp",
+                          "assets/jollof_rice.webp",
+                          "assets/akara.webp",
+                          "assets/rice_beans.webp",
+                          "assets/fried_rice.webp",
+                          "assets/pounded_yam.jpg",
+                        ];
+                        var cart = Provider.of<CartProvider>(context);
+                        return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              var disName =
+                                  snapshot.data!.docs[index]["dishName"];
+                              var disPrice =
+                                  snapshot.data!.docs[index]["dishPrice"];
+                              var dishQuantity =
+                                  snapshot.data!.docs[index]["quantity"];
+                              return Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                margin: EdgeInsets.all(15),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Cart ?",
+                                                  style: TextStyle(
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: secondaryColor,
+                                                  ),
+                                                ),
+                                                CloseButton()
+                                              ],
+                                            ),
+                                            actions: [
+                                              Column(
+                                                children: [
+                                                  ListTile(
+                                                    title: Text(
+                                                      disName.toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: secondaryColor,
+                                                      ),
+                                                    ),
+                                                    subtitle: Text(
+                                                      disPrice.toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: secondaryColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () async {
+                                                      try {
+                                                        if (dishQuantity <= 0) {
+                                                          Fluttertoast.showToast(
+                                                              toastLength: Toast
+                                                                  .LENGTH_LONG,
+                                                              msg:
+                                                                  "Not Available. Try again later");
+                                                          Navigator.pop(
+                                                              context);
+                                                        } else {
+                                                          cart.addDish(
+                                                            dishItem: DishItem(
+                                                              dishName: disName,
+                                                              dishPrice:
+                                                                  disPrice,
+                                                            ),
+                                                          );
+                                                          Fluttertoast.showToast(
+                                                              toastLength: Toast
+                                                                  .LENGTH_LONG,
+                                                              msg:
+                                                                  "Added to cart successfully");
+                                                          Navigator.pop(
+                                                              context);
+                                                        }
+                                                      } catch (error) {
+                                                        Fluttertoast.showToast(
+                                                          toastLength:
+                                                              Toast.LENGTH_LONG,
+                                                          msg: error.toString(),
+                                                        );
+                                                        Navigator.pop(context);
+                                                      }
+                                                    },
+                                                    child: Text("Add"),
+                                                  ),
+                                                  SizedBox(height: 15)
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Image.asset(
+                                      dishImages[index],
+                                      height: 200,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      }),
                 ),
               ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class DishCard extends StatelessWidget {
-  DishCard({
-    required this.price,
-    required this.dishName,
-    required this.image,
-  });
-  final String dishName;
-  final double price;
-  final AssetImage image;
-
-  @override
-  Widget build(BuildContext context) {
-    var cart = Provider.of<CartProvider>(context);
-    return Card(
-      elevation: 4,
-      child: GestureDetector(
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Add to Cart"),
-                      CloseButton(),
-                    ],
-                  ),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListTile(
-                        title: Text(
-                          "Dish: " + dishName,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(
-                          "Price: " + price.toString(),
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        trailing: Image(image: akaraImage),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          cart.addDish(
-                            dishItem:
-                                DishItem(dishName: dishName, dishPrice: price),
-                          );
-                          Fluttertoast.showToast(
-                              msg: "Added to cart successfully");
-                          Navigator.pop(context);
-                        },
-                        child: Text("Add"),
-                      )
-                    ],
-                  ),
-                );
-              });
-        },
-        child: Container(
-          padding: EdgeInsets.all(5),
-          alignment: Alignment.bottomCenter,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              image: image,
-              fit: BoxFit.fill,
             ),
           ),
         ),

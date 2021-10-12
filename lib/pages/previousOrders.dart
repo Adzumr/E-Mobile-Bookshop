@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_restaurant/components/colors.dart';
-import 'package:my_restaurant/components/common.dart';
 import 'package:my_restaurant/onBoardingPages/adminSigning.dart';
 
 class PreviousOrders extends StatefulWidget {
@@ -50,8 +49,9 @@ class _PreviousOrdersState extends State<PreviousOrders> {
         child: Container(
             padding: EdgeInsets.all(20),
             child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection("Orders").snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection("Available Dishes")
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(
@@ -62,18 +62,11 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                   return ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
-                        Map<String, dynamic> userDetails =
-                            snapshot.data!.docs[index]["User Detail"];
-
-                        Map<String, dynamic> dishDetail =
-                            snapshot.data!.docs[index]["Dishes"];
-                        var dishNamelist = [];
-                        var userInfo = [];
-                        dishDetail
-                            .forEach((key, value) => dishNamelist.add(key));
-                        userDetails
-                            .forEach((key, value) => userInfo.add(value));
-
+                        // Map<String, dynamic> userDetails =
+                        //     snapshot.data!.docs[index]["User Detail"];
+                        //
+                        // Map<String, dynamic> dishDetail =
+                        //     snapshot.data!.docs[index]["Dishes"];
                         return Card(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           elevation: 2,
@@ -83,18 +76,8 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                for (var user in userInfo)
-                                  Text(
-                                    user,
-                                    style: orderHistoryStyle,
-                                  ),
-                                for (var item in dishNamelist)
-                                  Text(
-                                    item,
-                                    style: orderHistoryStyle,
-                                  ),
                                 Text(
-                                  snapshot.data!.docs[index]["Total Amount"]
+                                  snapshot.data!.docs[index]["poridgeYam"]
                                       .toString(),
                                   style: TextStyle(
                                     fontSize: 25,

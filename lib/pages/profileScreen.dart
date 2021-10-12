@@ -7,7 +7,6 @@ import 'package:modal_progress_hud_alt/modal_progress_hud_alt.dart';
 import 'package:my_restaurant/components/colors.dart';
 import 'package:my_restaurant/components/common.dart';
 import 'package:my_restaurant/onBoardingPages/signIn.dart';
-import 'package:my_restaurant/pages/about.dart';
 import 'package:my_restaurant/pages/homeScreen.dart';
 
 class Profile extends StatefulWidget {
@@ -57,8 +56,8 @@ class _ProfileState extends State<Profile> {
                     ),
                     IconButton(
                         onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, AboutMe.idScreen, (route) => false);
+                          // Navigator.pushNamedAndRemoveUntil(
+                          //     context, AboutMe.idScreen, (route) => false);
                         },
                         icon: Icon(
                           Icons.info,
