@@ -1,5 +1,5 @@
-class DishItem {
-  String dishName;
-  var dishPrice;
-  DishItem({required this.dishName, required this.dishPrice});
+class ItemCart {
+  String itemName;
+  var itemPrice;
+  ItemCart({required this.itemName, required this.itemPrice});
 }

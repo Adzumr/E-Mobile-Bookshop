@@ -20,12 +20,12 @@ InputDecoration textFieldDecoration = InputDecoration(
   fillColor: primaryColor,
   contentPadding: EdgeInsets.all(10),
   labelStyle: TextStyle(
-    color: primaryColor,
+    color: secondaryColor,
   ),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(
-      color: secondaryColor,
+      color: primaryColor,
       width: 2,
     ),
   ),

@@ -28,6 +28,8 @@ dependencies:
   font_awesome_flutter: any
   modal_progress_hud_alt: any
   fluttertoast: any
+  double_back_to_close_app: ^2.0.1
+  # badges: ^2.0.1
 
 dev_dependencies:
   flutter_test:

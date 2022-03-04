@@ -2,31 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:my_restaurant/main.dart';
 
 import 'dishItem.dart';
 
 class CartProvider with ChangeNotifier {
-  List<DishItem> dishList = [];
+  List<ItemCart> itemList = [];
   double price = 0.0;
-  void addDish({required DishItem dishItem}) {
-    dishList.add(dishItem);
-    price = price + dishItem.dishPrice;
+  void addDish({required ItemCart dishItem}) {
+    itemList.add(dishItem);
+    price = price + dishItem.itemPrice;
     notifyListeners();
   }
 
   static void retrieveOrders() {}
   void removeDish({
     required int index,
-    required var dishPrice,
+    required var itemPrice,
   }) {
-    dishList.removeAt(index);
-    price = price - dishPrice;
+    itemList.removeAt(index);
+    price = price - itemPrice;
     notifyListeners();
   }
 
   int get count {
-    return dishList.length;
+    return itemList.length;
   }
 
   double get totalPrice {
@@ -34,42 +33,36 @@ class CartProvider with ChangeNotifier {
   }
 
   var userID = FirebaseAuth.instance.currentUser!.uid;
-  var userin = FirebaseFirestore.instance
-      .collection("Users")
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .snapshots();
+  // var userin = FirebaseFirestore.instance
+  //     .collection("Customers")
+  //     .doc(FirebaseAuth.instance.currentUser!.uid)
+  //     .snapshots();
 
   void placeOrder() async {
-    var dishMap = {};
+    print("Cart Total Amount is :" + price.toString());
+    print("Cart Total Items is :" + count.toString());
+    var itemMap = {};
     var userInfo = {
       "Name": FirebaseAuth.instance.currentUser!.displayName,
       "Email Address": FirebaseAuth.instance.currentUser!.email,
     };
-    dishList.forEach((dish) => dishMap[dish.dishName] = dish.dishPrice);
-    Map orderPlaced = {
-      "Dishes": dishMap,
-      "Amount": price,
-      "User": userInfo,
-    };
-    Map nodMCU = {
-      "Dishes": dishMap,
-      "Amount": price,
-    };
-
+    itemList.forEach((item) => itemMap[item.itemName] = item.itemPrice);
+  
     try {
-      await nodMCUReference.set(nodMCU);
       await FirebaseFirestore.instance.collection("Orders").add({
-        "Dishes": dishMap,
+        "Dishes": itemMap,
         "Amount": price,
         "User": userInfo,
       });
-      await ordersReference.push().set(orderPlaced).then((value) {
+      itemList.clear();
+      price = 0.0;
+      /*   await ordersReference.push().set(orderPlaced).then((value) {
         Fluttertoast.showToast(msg: "Order Placed!!!");
-        dishList.clear();
+        itemList.clear();
         price = 0.0;
       }).timeout(Duration(seconds: 15), onTimeout: () {
         Fluttertoast.showToast(msg: "Service Timeout !!!");
-      });
+      }); */
     } catch (error) {
       Fluttertoast.showToast(msg: error.toString());
     }

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "159862829927",
-    "project_id": "my-restaurant-9e53d",
-    "storage_bucket": "my-restaurant-9e53d.appspot.com"
+    "project_number": "887218191532",
+    "project_id": "bookshop-b1305",
+    "storage_bucket": "bookshop-b1305.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:159862829927:android:51403eea7695049bfff5c2",
+        "mobilesdk_app_id": "1:887218191532:android:1dbb51e55be51f69cef309",
         "android_client_info": {
-          "package_name": "adzumrjada.my_restaurant"
+          "package_name": "adzumr.bookshop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "159862829927-2l0pqavbifav0c4arabj3e5p3jf3p243.apps.googleusercontent.com",
+          "client_id": "887218191532-sl8r2h276t69503vu7um388sau03ajko.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCD60mCfRsAk28oUgDsCVEanWw3WnI40dI"
+          "current_key": "AIzaSyDZj6udxf6PsmI4N8H07jkxmiEgcMXaGK4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "159862829927-2l0pqavbifav0c4arabj3e5p3jf3p243.apps.googleusercontent.com",
+              "client_id": "887218191532-sl8r2h276t69503vu7um388sau03ajko.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

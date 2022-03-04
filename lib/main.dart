@@ -2,15 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_restaurant/components/colors.dart';
 import 'package:my_restaurant/modelAndServices/cartProvider.dart';
-import 'package:my_restaurant/modelAndServices/userProvider.dart';
-import 'package:my_restaurant/onBoardingPages/adminSigning.dart';
 import 'package:my_restaurant/onBoardingPages/signIn.dart';
 import 'package:my_restaurant/onBoardingPages/signUp.dart';
 import 'package:my_restaurant/pages/about.dart';
 import 'package:my_restaurant/pages/homeScreen.dart';
-import 'package:my_restaurant/pages/previousOrders.dart';
 import 'package:my_restaurant/pages/profileScreen.dart';
 import 'package:my_restaurant/pages/shoppingCart.dart';
 import 'package:provider/provider.dart';
@@ -23,12 +21,12 @@ void main() async {
   );
 }
 
-DatabaseReference userReference =
-    FirebaseDatabase.instance.reference().child("Users");
-DatabaseReference nodMCUReference =
-    FirebaseDatabase.instance.reference().child("Nod MCU Orders");
-DatabaseReference ordersReference =
-    FirebaseDatabase.instance.reference().child("Orders");
+// DatabaseReference userReference =
+//     FirebaseDatabase.instance.reference().child("Users");
+// DatabaseReference nodMCUReference =
+//     FirebaseDatabase.instance.reference().child("Nod MCU Orders");
+// DatabaseReference ordersReference =
+//     FirebaseDatabase.instance.reference().child("Orders");
 
 class MyApp extends StatelessWidget {
   @override
@@ -38,9 +36,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => UserProvider(),
-        ),
+     
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -71,18 +67,93 @@ class MyApp extends StatelessWidget {
           ),
         ),
         initialRoute: FirebaseAuth.instance.currentUser == null
-            ? SignIn.idScreen
+            ? WelcomeScreen.idScreen
             : HomeScreen.idScreen,
         routes: {
           SignIn.idScreen: (context) => SignIn(),
+          WelcomeScreen.idScreen: (context) => WelcomeScreen(),
           AboutMe.idScreen: (context) => AboutMe(),
-          AdminSignIn.idScreen: (context) => AdminSignIn(),
           SignUp.idScreen: (context) => SignUp(),
           HomeScreen.idScreen: (context) => HomeScreen(),
           Profile.idScreen: (context) => Profile(),
           ShoppingCart.idScreen: (context) => ShoppingCart(),
-          PreviousOrders.idScreen: (context) => PreviousOrders(),
         },
+      ),
+    );
+  }
+}
+
+class WelcomeScreen extends StatefulWidget {
+  static const String idScreen = "welcomeScreen";
+  const WelcomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _WelcomeScreenState createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        await Fluttertoast.showToast(
+          
+          msg: "Exit");
+        // Navigator.popAndPushNamed(context, HomeScreen.idScreen);
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: whiteColor,
+        body: SafeArea(
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "Online Bookshop",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Icon(
+                    Icons.school,
+                    size: 100,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, SignUp.idScreen, (route) => false);
+                    },
+                    child: Text("Register"),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: primaryColor),
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, SignIn.idScreen, (route) => false);
+                    },
+                    child: Text("Login"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
