@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_restaurant/components/colors.dart';
@@ -20,13 +19,6 @@ void main() async {
     MyApp(),
   );
 }
-
-// DatabaseReference userReference =
-//     FirebaseDatabase.instance.reference().child("Users");
-// DatabaseReference nodMCUReference =
-//     FirebaseDatabase.instance.reference().child("Nod MCU Orders");
-// DatabaseReference ordersReference =
-//     FirebaseDatabase.instance.reference().child("Orders");
 
 class MyApp extends StatelessWidget {
   @override

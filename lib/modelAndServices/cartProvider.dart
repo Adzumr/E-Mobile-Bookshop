@@ -14,7 +14,6 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  static void retrieveOrders() {}
   void removeDish({
     required int index,
     required var itemPrice,
@@ -33,12 +32,7 @@ class CartProvider with ChangeNotifier {
   }
 
   var userID = FirebaseAuth.instance.currentUser!.uid;
-  // var userin = FirebaseFirestore.instance
-  //     .collection("Customers")
-  //     .doc(FirebaseAuth.instance.currentUser!.uid)
-  //     .snapshots();
-
-  void placeOrder() async {
+   void placeOrder() async {
     print("Cart Total Amount is :" + price.toString());
     print("Cart Total Items is :" + count.toString());
     var itemMap = {};
@@ -56,13 +50,7 @@ class CartProvider with ChangeNotifier {
       });
       itemList.clear();
       price = 0.0;
-      /*   await ordersReference.push().set(orderPlaced).then((value) {
-        Fluttertoast.showToast(msg: "Order Placed!!!");
-        itemList.clear();
-        price = 0.0;
-      }).timeout(Duration(seconds: 15), onTimeout: () {
-        Fluttertoast.showToast(msg: "Service Timeout !!!");
-      }); */
+  
     } catch (error) {
       Fluttertoast.showToast(msg: error.toString());
     }
